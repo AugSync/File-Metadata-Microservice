@@ -1,0 +1,24 @@
+#!/bin/bash
+set -e
+
+if [ ! -z "${GITHUB_REPO}" ]; then
+  echo "Cloning ${GITHUB_REPO}..."
+  # Re-enable sleep to not make the editor fail
+  # sleep 5
+  rm -rf /app/* /app/.* &> /dev/null || true
+  git init
+  if [ ! -z "${GITHUB_USER}" ]; then
+    git remote add origin "https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/${GITHUB_REPO}"
+  else
+    git remote add origin "https://github.com/${GITHUB_REPO}"
+  fi
+  git fetch
+  git checkout -t origin/master
+  git remote set-url origin "https://github.com/${GITHUB_REPO}"
+  echo "Done!"
+  refresh
+  exit 0
+fi
+
+echo "GitHub Cloner not initialized"
+/etc/app-types/static/start.sh
