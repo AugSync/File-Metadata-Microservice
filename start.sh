@@ -4,7 +4,7 @@ set -e
 if [ ! -z "${GITHUB_REPO}" ]; then
   echo "Cloning ${GITHUB_REPO}..."
   # Re-enable sleep to not make the editor fail
-  # sleep 5
+  sleep 5
   rm -rf /app/* /app/.* &> /dev/null || true
   git init
   if [ ! -z "${GITHUB_USER}" ]; then
@@ -21,4 +21,7 @@ if [ ! -z "${GITHUB_REPO}" ]; then
 fi
 
 echo "GitHub Cloner not initialized"
-/etc/app-types/static/start.sh
+
+export PATH="${PATH}:${DEFAULT_NODE_DIR}"
+
+ws --port 3000 --directory . --forbid '/.env' --forbid '/.data' --forbid '/.git' --log-format combined
