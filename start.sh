@@ -3,6 +3,7 @@ set -e
 
 if [ ! -z "${GITHUB_REPO}" ]; then
   echo "Cloning ${GITHUB_REPO}, please wait..."
+  sleep 5
   curl -X POST http://localhost:1083/stop &> /dev/null
   rm -rf /app/* /app/.* /rbd/pnpm-volume/app/node_modules &> /dev/null || true
   git init
