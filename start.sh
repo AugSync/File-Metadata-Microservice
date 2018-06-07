@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e
 
-if [ ! -z "${GITHUB_REPO}" ]; then
-  echo "Cloning ${GITHUB_REPO}, please wait..."
+if [ ! -z "${REPO}" ]; then
+  echo "Cloning ${REPO}, please wait..."
   until nc -z localhost 1081; do
     sleep 1
   done
@@ -10,20 +10,22 @@ if [ ! -z "${GITHUB_REPO}" ]; then
   curl -X POST http://localhost:1083/stop &> /dev/null
   rm -rf /app/* /app/.* /rbd/pnpm-volume/app/node_modules &> /dev/null || true
   git init
-  if [ ! -z "${GITHUB_USER}" ]; then
-    git remote add origin "https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/${GITHUB_REPO}"
+  if [ ! -z "${USER}" ]; then
+    proto="$(echo ${REPO} | grep :// | sed -e's,^\(.*://\).*,\1,g')"
+    url="$(echo ${REPO/$proto/})"
+    git remote add origin "${proto}${USER}:${PASS}@${url}"
   else
-    git remote add origin "https://github.com/${GITHUB_REPO}"
+    git remote add origin "${REPO}"
   fi
   git fetch
   git checkout -t origin/master
-  git remote set-url origin "https://github.com/${GITHUB_REPO}"
+  git remote set-url origin ${REPO}
   echo "Done!"
   refresh
   exit 0
 fi
 
-echo "GitHub Cloner not initialized"
+echo "Git Cloner not initialized"
 
 export PATH="${PATH}:${DEFAULT_NODE_DIR}"
 

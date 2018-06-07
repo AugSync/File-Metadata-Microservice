@@ -1,5 +1,5 @@
 {
-  "install": "echo GitHub Cloner",
+  "install": "echo Git Cloner",
   "start": "bash start.sh",
   "watch": {
     "install": {
