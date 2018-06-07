@@ -4,7 +4,9 @@ set -e
 _cleanup () {
   if [ $? -ne 0 ]; then
     rm -rf /app/* /app/.* /rbd/pnpm-volume/app/node_modules &> /dev/null || true
-    echo "Cloning ${REPO} failed. Perhaps a typo?" > README.md
+    echo "# Error during clone"       > README.md
+    echo "Cloning `${REPO}` failed." >> README.md
+    echo "Perhaps a typo?"           >> README.md
   fi
   if [ ! -z ${REPO} ]; then
     refresh
