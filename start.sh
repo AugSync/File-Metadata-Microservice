@@ -6,7 +6,7 @@ if [ ! -z "${REPO}" ]; then
   until nc -z localhost 1081; do
     sleep 1
   done
-  sleep 1
+  sleep 5
   curl -X POST http://localhost:1083/stop &> /dev/null
   rm -rf /app/* /app/.* /rbd/pnpm-volume/app/node_modules &> /dev/null || true
   git init
