@@ -2,8 +2,8 @@
 set -e
 
 if [ ! -z "${GITHUB_REPO}" ]; then
-  echo "Cloning ${GITHUB_REPO}..."
-  sleep 10
+  echo "Cloning ${GITHUB_REPO}, please wait..."
+  curl -X POST http://localhost:1083/stop
   rm -rf /app/* /app/.* &> /dev/null || true
   git init
   if [ ! -z "${GITHUB_USER}" ]; then
