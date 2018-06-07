@@ -3,7 +3,7 @@ set -e
 
 if [ ! -z "${GITHUB_REPO}" ]; then
   echo "Cloning ${GITHUB_REPO}..."
-  # Re-enable sleep to not make the editor fail
+  # Sleep to not make the editor fail
   sleep 5
   rm -rf /app/* /app/.* &> /dev/null || true
   git init
