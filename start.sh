@@ -4,7 +4,6 @@ set -e
 if [ ! -z "${GITHUB_REPO}" ]; then
   echo "Cloning ${GITHUB_REPO}..."
   rm -rf /app/* /app/.* &> /dev/null || true
-  refresh
   git init
   if [ ! -z "${GITHUB_USER}" ]; then
     git remote add origin "https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/${GITHUB_REPO}"
