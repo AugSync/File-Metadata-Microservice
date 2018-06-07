@@ -3,9 +3,8 @@ set -e
 
 if [ ! -z "${GITHUB_REPO}" ]; then
   echo "Cloning ${GITHUB_REPO}..."
-  # Sleep to not make the editor fail
-  sleep 5
   rm -rf /app/* /app/.* &> /dev/null || true
+  refresh
   git init
   if [ ! -z "${GITHUB_USER}" ]; then
     git remote add origin "https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/${GITHUB_REPO}"
