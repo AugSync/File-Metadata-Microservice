@@ -3,8 +3,8 @@ set -e
 
 if [ ! -z "${GITHUB_REPO}" ]; then
   echo "Cloning ${GITHUB_REPO}, please wait..."
-  curl -X POST http://localhost:1083/stop
-  rm -rf /app/* /app/.* &> /dev/null || true
+  curl -X POST http://localhost:1083/stop &> /dev/null
+  rm -rf /app/* /app/.* /rbd/pnpm-volume/app/node_modules &> /dev/null || true
   git init
   if [ ! -z "${GITHUB_USER}" ]; then
     git remote add origin "https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/${GITHUB_REPO}"
