@@ -21,3 +21,7 @@ Use this url:
 The `GITHUB_TOKEN` provided should have repo access.
 
 Please note that this url is _not_ safe to be shared as it contains a GitHub token, which acts as a password.
+
+## Cloning without a browser
+
+The previous links r
