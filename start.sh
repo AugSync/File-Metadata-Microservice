@@ -1,6 +1,16 @@
 #!/bin/bash
 set -e
 
+_cleanup () {
+  if [ $? -ne 0 ]; then
+    rm -rf /app/* /app/.* /rbd/pnpm-volume/app/node_modules &> /dev/null || true
+    echo "Cloning ${REPO} failed. Perhaps a typo?" > README.md
+  fi
+  refresh
+}
+
+trap _cleanup EXIT
+
 if [ ! -z "${REPO}" ]; then
   echo "Cloning ${REPO}, please wait..."
   until nc -z localhost 1081; do
@@ -21,7 +31,6 @@ if [ ! -z "${REPO}" ]; then
   git checkout -t origin/master
   git remote set-url origin ${REPO}
   echo "Done!"
-  refresh
   exit 0
 fi
 
