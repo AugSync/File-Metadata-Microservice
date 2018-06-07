@@ -6,7 +6,10 @@ _cleanup () {
     rm -rf /app/* /app/.* /rbd/pnpm-volume/app/node_modules &> /dev/null || true
     echo "Cloning ${REPO} failed. Perhaps a typo?" > README.md
   fi
-  refresh
+  if [ ! -z ${REPO} ]; then
+    refresh
+  fi
+  exit 0
 }
 
 trap _cleanup EXIT
