@@ -3,6 +3,7 @@ set -e
 
 if [ ! -z "${GITHUB_REPO}" ]; then
   echo "Cloning ${GITHUB_REPO}..."
+  sleep 10
   rm -rf /app/* /app/.* &> /dev/null || true
   git init
   if [ ! -z "${GITHUB_USER}" ]; then
