@@ -3,7 +3,7 @@ set -e
 
 if [ ! -z "${GITHUB_REPO}" ]; then
   echo "Cloning ${GITHUB_REPO}, please wait..."
-  until [ nc -z localhost 1081 ]; do
+  until nc -z localhost 1081; do
     sleep 1
   done
   sleep 1
