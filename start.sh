@@ -2,11 +2,9 @@
 set -e
 
 if [ -z ${REPO_URL} ]; then
-  echo "Nothing to clone: remix with REPO_URL env variable (see HOWTO.md)"
-
   export PATH="${PATH}:${DEFAULT_NODE_DIR}"
 
-  ws --port 3000 --directory . --forbid '/.env' --forbid '/.data' --forbid '/.git' --log-format combined
+  ws --port 3000 --directory . --forbid '/.env' --forbid '/.data' --forbid '/.git' --log-format combined &> /dev/null
   exit
 fi
 
@@ -57,6 +55,7 @@ if [ ! -z "${REPO_URL}" ]; then
   if [ ! -z "${user}" ]; then
     mkdir -p .config/git
     echo "${proto}://${user}:${pass}@${hostname}" > .config/git/credentials
+    echo "Credentials stored in .config/git/credentials"
   fi
   git remote add origin "${safe_url}"
   git fetch
