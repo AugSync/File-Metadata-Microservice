@@ -42,8 +42,10 @@ if [ ! -z "${REPO}" ]; then
   git fetch
   git checkout -t origin/master
   git remote set-url origin ${REPO}
-  mkdir .data
-  echo "${proto}${USER}:${PASS}@${url}" > .data/git-credentials
+  
+  mkdir -p .config/git
+  echo "${proto}${USER}:${PASS}@${url}" > .config/git/credentials
+  git config credential.helper store
 
   echo "Done!"
   exit 0
