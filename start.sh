@@ -1,29 +1,49 @@
 #!/bin/bash
 set -e
 
-_cleanup () {
-  if [ ! -z ${REPO} ]; then
-    if [ $? -ne 0 ]; then
-      rm -rf /app/* /app/.* /rbd/pnpm-volume/app/node_modules &> /dev/null || true
-      echo "# Error during clone"         > README.md
-      echo ""                            >> README.md
-      echo "Cloning ${REPO} failed."     >> README.md
-      echo ""                            >> README.md
-      echo "Check the Logs for details." >> README.md
-    fi
-    refresh
-  fi
-  exit 0
-}
+if [ -z ${REPO_URL} ]; then
+  echo "Git Cloner not initialized"
+
+  export PATH="${PATH}:${DEFAULT_NODE_DIR}"
+
+  ws --port 3000 --directory . --forbid '/.env' --forbid '/.data' --forbid '/.git' --log-format combined
+  exit
+fi
 
 trap _cleanup EXIT
 
-if [ ! -z "${REPO}" ]; then
-  proto="$(echo ${REPO} | grep :// | sed -e's,^\(.*://\).*,\1,g')"
-  url="$(echo ${REPO/$proto/})"
+_cleanup () {
+  if [ $? -ne 0 ]; then
+    rm -rf /app/* /app/.* /rbd/pnpm-volume/app/node_modules &> /dev/null || true
+    echo "# Error during clone"         > README.md
+    echo ""                            >> README.md
+    echo "Cloning ${REPO_URL} failed." >> README.md
+    echo ""                            >> README.md
+    echo "Check the Logs for details." >> README.md
+  fi
+  refresh
+  exit 0
+}
 
-  echo "Cloning ${REPO}, please wait..."
+if [ ! -z "${REPO_URL}" ]; then
+  parsed_url=($(python ./parse_url.py ${REPO_URL}))
   
+  echo ${parsed_url[@]}
+  
+  proto=${parsed_url[0]}
+  user=${parsed_url[1]}
+  pass=${parsed_url[2]}
+  hostname=${parsed_url[3]}
+  pathname=${parsed_url[4]}
+  safe_url="${proto}${hostname}${pathname}"
+  
+  if [ ${user} = "None" ] && [ ${pass} = "None" ]; then
+    user=""
+    pass=""
+  fi
+
+  echo "Cloning ${safe_url}, please wait..."
+
   # Wait for ot server to become available before stopping it
   until nc -z localhost 1081; do
     sleep 1
@@ -50,9 +70,3 @@ if [ ! -z "${REPO}" ]; then
   echo "Done!"
   exit 0
 fi
-
-echo "Git Cloner not initialized"
-
-export PATH="${PATH}:${DEFAULT_NODE_DIR}"
-
-ws --port 3000 --directory . --forbid '/.env' --forbid '/.data' --forbid '/.git' --log-format combined
