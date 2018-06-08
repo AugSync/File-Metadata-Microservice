@@ -28,8 +28,6 @@ _cleanup () {
 if [ ! -z "${REPO_URL}" ]; then
   parsed_url=($(python ./parse_url.py ${REPO_URL}))
   
-  echo ${parsed_url[@]}
-  
   proto=${parsed_url[0]}
   user=${parsed_url[1]}
   pass=${parsed_url[2]}
