@@ -2,7 +2,7 @@
 set -e
 
 if [ -z ${REPO_URL} ]; then
-  echo "Git Cloner not initialized"
+  echo "Nothing to clone: remix with REPO_URL env variable (see HOWTO.md)"
 
   export PATH="${PATH}:${DEFAULT_NODE_DIR}"
 
@@ -53,19 +53,16 @@ if [ ! -z "${REPO_URL}" ]; then
   curl -X POST http://localhost:1083/stop &> /dev/null
   
   rm -rf /app/* /app/.* /rbd/pnpm-volume/app/node_modules &> /dev/null || true
+
   git init
-  if [ ! -z "${USER}" ]; then
-    git remote add origin "${proto}${USER}:${PASS}@${url}"
-  else
-    git remote add origin "${REPO}"
+  git config credential.helper store
+  if [ ! -z "${user}" ]; then
+    mkdir -p .config/git
+    echo "${proto}${user}:${pass}@${hostname}" > .config/git/credentials
   fi
+  git remote add origin "${safe_url}"
   git fetch
   git checkout -t origin/master
-  git remote set-url origin ${REPO}
-  
-  mkdir -p .config/git
-  echo "${proto}${USER}:${PASS}@${url}" > .config/git/credentials
-  git config credential.helper store
 
   echo "Done!"
   exit 0

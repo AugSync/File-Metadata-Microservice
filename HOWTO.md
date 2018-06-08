@@ -8,16 +8,18 @@ This project is used in the New Project menu in the Glitch editor. If you want t
 
 ## Cloning a public repository
 
-Use this url:
+Use an url like this:
 
-    https://glitch.com/edit/#!/remix/git-cloner?REPO=git_url
+    https://glitch.com/edit/#!/remix/clone-from-repo?&REPO_URL=https://example.com/org/repo.git
+    
+Example:
+
+    https://glitch.com/edit/#!/remix/clone-from-repo?REPO_URL=https://github.com/howdyai/botkit-starter-slack.git
 
 ## Cloning a private repository
 
-Use this url:
+Use the same pattern as before, but with the username and password in the url:
 
-    https://glitch.com/edit/#!/remix/git-cloner?USER=login&PASS=password_or_token&REPO=git_url
-
-The `PASS` provided should have repo access if it is a GitHub token.
+    https://glitch.com/edit/#!/remix/clone-from-repo?&REPO_URL=https://user:pass@example.com/org/repo.git
 
 Please note that this url is _not_ safe to be shared as it contains a password.
