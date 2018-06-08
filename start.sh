@@ -19,23 +19,32 @@ _cleanup () {
 trap _cleanup EXIT
 
 if [ ! -z "${REPO}" ]; then
+  proto="$(echo ${REPO} | grep :// | sed -e's,^\(.*://\).*,\1,g')"
+  url="$(echo ${REPO/$proto/})"
+
   echo "Cloning ${REPO}, please wait..."
+  
+  # Wait for ot server to become available before stopping it
   until nc -z localhost 1081; do
     sleep 1
   done
   sleep 5
+  # Stop the OT Server
   curl -X POST http://localhost:1083/stop &> /dev/null
+  
   rm -rf /app/* /app/.* /rbd/pnpm-volume/app/node_modules &> /dev/null || true
   git init
   if [ ! -z "${USER}" ]; then
-    proto="$(echo ${REPO} | grep :// | sed -e's,^\(.*://\).*,\1,g')"
-    url="$(echo ${REPO/$proto/})"
-    echo "${proto}${USER}:${PASS}@${url}" > .git-credentials
+    git remote add origin "${proto}${USER}:${PASS}@${url}"
+  else
+    git remote add origin "${REPO}"
   fi
-  git remote add origin "${REPO}"
   git fetch
   git checkout -t origin/master
   git remote set-url origin ${REPO}
+  mkdir .data
+  echo "${proto}${USER}:${PASS}@${url}" > .data/git-credentials
+
   echo "Done!"
   exit 0
 fi
