@@ -30,10 +30,9 @@ if [ ! -z "${REPO}" ]; then
   if [ ! -z "${USER}" ]; then
     proto="$(echo ${REPO} | grep :// | sed -e's,^\(.*://\).*,\1,g')"
     url="$(echo ${REPO/$proto/})"
-    git remote add origin "${proto}${USER}:${PASS}@${url}"
-  else
-    git remote add origin "${REPO}"
+    echo "${proto}${USER}:${PASS}@${url}" > .git-credentials
   fi
+  git remote add origin "${REPO}"
   git fetch
   git checkout -t origin/master
   git remote set-url origin ${REPO}
