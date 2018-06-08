@@ -35,7 +35,7 @@ if [ ! -z "${REPO_URL}" ]; then
   pass=${parsed_url[2]}
   hostname=${parsed_url[3]}
   pathname=${parsed_url[4]}
-  safe_url="${proto}${hostname}${pathname}"
+  safe_url="${proto}://${hostname}${pathname}"
   
   if [ ${user} = "None" ] && [ ${pass} = "None" ]; then
     user=""
@@ -58,7 +58,7 @@ if [ ! -z "${REPO_URL}" ]; then
   git config credential.helper store
   if [ ! -z "${user}" ]; then
     mkdir -p .config/git
-    echo "${proto}${user}:${pass}@${hostname}" > .config/git/credentials
+    echo "${proto}://${user}:${pass}@${hostname}" > .config/git/credentials
   fi
   git remote add origin "${safe_url}"
   git fetch
