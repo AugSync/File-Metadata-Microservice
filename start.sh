@@ -40,6 +40,11 @@ fi
 
 echo "Cloning ${safe_url}, please wait..."
 
+# Wait for ot server to become available before stopping it
+until nc -z localhost 1081; do
+  sleep 1
+done
+sleep 5
 # Stop the OT Server
 curl -X POST http://localhost:1083/stop &> /dev/null
 
