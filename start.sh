@@ -5,7 +5,7 @@ set -e
 if [ -z ${REPO_URL} ]; then
   export PATH="${PATH}:${DEFAULT_NODE_DIR}"
 
-  ws --port 3000 --directory . --forbid '/.env' --forbid '/.data' --forbid '/.git' --log-format combined &> /dev/null
+  ws --port 3000 --log.format combined --directory . --blacklist '/.env' '/.data' '/.git' &> /dev/null
   exit
 fi
 
@@ -40,11 +40,6 @@ fi
 
 echo "Cloning ${safe_url}, please wait..."
 
-# Wait for ot server to become available before stopping it
-until nc -z localhost 1081; do
-  sleep 1
-done
-sleep 1
 # Stop the OT Server
 curl -X POST http://localhost:1083/stop &> /dev/null
 
