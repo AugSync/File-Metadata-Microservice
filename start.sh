@@ -50,7 +50,7 @@ git config credential.helper store
 if [ ! -z "${user}" ]; then
   mkdir -p .config/git
   echo "${proto}://${user}:${pass}@${hostname}" > .config/git/credentials
-  echo "Credentials stored in .config/git/credentials"
+  echo "Credentials stored in .config/git/credentials" 
 fi
 git remote add origin "${safe_url}"
 git fetch
