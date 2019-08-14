@@ -52,8 +52,14 @@ if [ ! -z "${user}" ]; then
   echo "${proto}://${user}:${pass}@${hostname}" > .config/git/credentials
   echo "Credentials stored in .config/git/credentials" 
 fi
-git remote add origin "${safe_url}"
-git fetch
-git checkout -t origin/master
+
+git remote add origin "${safe_url}" --fetch
+
+git remote show origin
+
+# Get the default branch to use as defined from the project.
+default_branch="$(git remote show origin | grep "HEAD branch" | sed 's/.*: //')"
+echo "Checking out '${default_branch}' for this project..."
+git checkout ${default_branch}
 
 echo "Done!"
