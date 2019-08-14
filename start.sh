@@ -54,7 +54,6 @@ if [ ! -z "${user}" ]; then
 fi
 
 git remote add origin "${safe_url}" --fetch
-
 git remote show origin
 
 # Get the default branch to use as defined from the project.
