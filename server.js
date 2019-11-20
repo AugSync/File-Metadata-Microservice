@@ -20,6 +20,14 @@ app.get('/hello', function(req, res){
   res.json({greetings: "Hello, API"});
 });
 
+app.post("/api/fileanalyse", upload.single('upfile'), (req, res, next)=>{
+  req.filename = req.file.originalname
+  req.sizebytes = req.file.size
+  next()
+}, (req, res)=>{
+  res.json({name: req.filename, size: req.sizebytes})
+})
+
 app.listen(process.env.PORT || 3000, function () {
   console.log('Node.js listening ...');
 });
