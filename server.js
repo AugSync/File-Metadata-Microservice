@@ -4,6 +4,8 @@ var express = require('express');
 var cors = require('cors');
 
 // require and use "multer"...
+var multer  = require('multer')
+var upload = multer({ dest: 'uploads/' })
 
 var app = express();
 
